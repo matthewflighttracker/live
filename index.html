@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="My Flight Tracker" />
+  <meta name="application-name" content="My Flight Tracker" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="My Flight Tracker" />
+  <meta property="og:description" content="Track all your flights in one clean, mobile-first log." />
+  <meta property="og:image" content="./icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <link rel="shortcut icon" href="logo.svg" />
+  <title>My Flight Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="top-row">
+        <div>
+          <div class="eyebrow">✈️ Personal flight tracker</div>
+          <h1>My Flight Log</h1>
+
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="addFlightBtn">+ Add flight</button>
+            <button class="btn" id="refreshBtn">Refresh</button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="num" id="statFlights">0</span><span class="label">Flights</span></div>
+          <div class="stat"><span class="num" id="statRegs">0</span><span class="label">Regs</span></div>
+          <div class="stat"><span class="num" id="statRoutes">0</span><span class="label">Routes</span></div>
+          <div class="stat"><span class="num" id="statYears">0</span><span class="label">Years</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="filters-shell">
+        <div class="filters">
+          <div class="search-row">
+            <input id="regSearch" type="search" placeholder="Search registration, e.g. G-WUKU" />
+            <button class="btn" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="filter-strip" id="filterStrip" aria-label="Flight filters"></div>
+        </div>
+
+        <div class="filter-popover" id="filterPopover" hidden>
+          <div class="filter-popover-head">
+            <div>
+              <div class="filter-popover-kicker" id="filterPopoverKicker">Filter</div>
+              <h3 id="filterPopoverTitle">Choose a value</h3>
+            </div>
+            <button class="btn" id="closeFilterPopoverBtn" type="button">Close</button>
+          </div>
+          <div class="filter-popover-list" id="filterPopoverList"></div>
+        </div>
+      </div>
+
+      <div class="results-bar">
+        <div id="resultsText">Loading flights…</div>
+        <div id="lastUpdated"></div>
+      </div>
+
+      <div id="flightGrid">
+        <div class="loading">Loading your flights…</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="sheet">
+      <div class="handle"></div>
+      <div class="sheet-head">
+        <h2 id="modalTitle">Add flight</h2>
+        <button class="btn" id="closeModalBtn" type="button">Close</button>
+      </div>
+
+      <form id="flightForm">
+        <input type="hidden" id="formId" />
+
+        <div class="form-grid">
+          <div>
+            <label class="label" for="formDate">Date</label>
+            <input id="formDate" type="date" required />
+          </div>
+
+          <div>
+            <label class="label" for="formReg">Registration</label>
+            <input id="formReg" type="text" placeholder="G-WUKU" required />
+          </div>
+
+          <div>
+            <label class="label" for="formFrom">From airport</label>
+            <input id="formFrom" type="text" placeholder="LGW" required />
+          </div>
+
+          <div>
+            <label class="label" for="formTo">To airport</label>
+            <input id="formTo" type="text" placeholder="VIE" required />
+          </div>
+
+          <div>
+            <label class="label" for="formFlight">Flight code</label>
+            <input id="formFlight" type="text" placeholder="W95776" required />
+          </div>
+
+          <div>
+            <label class="label" for="formAirline">Airline</label>
+            <input id="formAirline" type="text" placeholder="Wizz Air" required />
+          </div>
+
+          <div>
+            <label class="label" for="formAircraft">Airplane</label>
+            <input id="formAircraft" type="text" placeholder="A321neo(XLR)" required />
+          </div>
+
+          <div>
+            <label class="label" for="formWho">Who</label>
+            <input id="formWho" type="text" placeholder="Matthew, Florence" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit" id="saveBtn">Save flight</button>
+          <button class="btn btn-danger" type="button" id="deleteBtn" style="display:none;">Delete flight</button>
+        </div>
+
+        <div class="status" id="formStatus"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
